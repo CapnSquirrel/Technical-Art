@@ -1,0 +1,37 @@
+import maya.cmds
+import random
+
+# make an empty list to store spheres and initialize variables x, z to keep track of grid positions
+spheres = []
+x, z = (0, 0)
+
+# create 20x20 grid of spheres
+for i in range(0, 20):
+    for j in range(0, 20):
+
+        # create sphere and add to list
+        sphere = maya.cmds.polySphere()[0]
+        spheres.append(sphere)
+
+        # place sphere in unique grid position and keyframe initial position
+        maya.cmds.setAttr(sphere + ".translateX", x)
+        maya.cmds.setAttr(sphere + ".translateZ", z)
+        maya.cmds.currentTime(1)
+        maya.cmds.setKeyframe(sphere)
+
+        # update x and z coordinates to traverse grid
+        x = x + 1
+    x = 0
+    z = z + 1
+
+# pick out 100 random frames, without repetition, between 0 and 720
+frames = random.sample(range(2, 721), k=100)
+
+# iterate over every sphere and create a keyframe for it at each chosen keyframe
+for sphere in spheres:
+    for frame in frames:
+        maya.cmds.currentTime(frame)
+
+        # random y positions chosen between 0 and 10 non inclusive
+        maya.cmds.setAttr(sphere + ".translateY", random.random()*10)
+        maya.cmds.setKeyframe(sphere)
