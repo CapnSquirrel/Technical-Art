@@ -10,6 +10,9 @@ def create_reference(file_path):
     root, ext = os.path.splitext(tail)
     maya.cmds.file(file_path, r=True, ns=root)
 
+def get_joints_from_namespace(ns):
+    return maya.cmds.ls(ns + ":*", type="joint")
+
 # Create a new scene
 maya.cmds.file(new=True, f=True)
 
@@ -25,16 +28,16 @@ maya.cmds.file(new=True, f=True)
 #    create_reference(ns)
 
 # Create char and anim namespaces
-animation_namespace = r"D:\CapnSquirrel\Development\TechArt\exercise\animations\maya\01_01.ma"
-character_namespace = "D:\CapnSquirrel\Development\TechArt\exercise\character.mb"
+animation_filename = r"D:\CapnSquirrel\Development\TechArt\exercise\animations\maya\01_01.ma"
+character_filename = "D:\CapnSquirrel\Development\TechArt\exercise\character.mb"
 
 # Bring in character
-create_reference(character_namespace)
+character_namespace = create_reference(character_filename)
 
 # Bring in the animation
-create_reference(animation_namespace)
+animation_namespace = create_reference(animation_filename)
 
 # get a list of joints of both the anim and char
 character_joints = get_joints_from_namespace(character_namespace)
-animation_joints = get_joints_from_namespace(character_namespace)
-character_joints 
+animation_joints = get_joints_from_namespace(animation_namespace)
+character_joints
