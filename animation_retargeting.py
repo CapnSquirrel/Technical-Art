@@ -37,7 +37,7 @@ def connect_joints(src_joints, dst_joints):
             if src_joint_name == "Hips":
                 maya.cmds.parentConstraint(src_joint, dst_joint, mo=True)
 
-def run(animation_filename, character_filename):
+def retarget_animation(animation_filename, character_filename):
     # Create a new scene
     maya.cmds.file(new=True, f=True)
     
@@ -75,9 +75,10 @@ def run(animation_filename, character_filename):
     maya.cmds.file(rename=renamed_file)
     maya.cmds.file(save=True, f=True)
 
-animations_dir = r"D:\CapnSquirrel\Development\TechArt\exercise\animations\maya"
-animation_files = [animations_dir + r"\01_" + ('%02d' %x) + ".ma" for x in range(1,11)]
-character_filename = "D:\CapnSquirrel\Development\TechArt\exercise\character.mb"
+def run():
+    animations_dir = r"D:\CapnSquirrel\Development\TechArt\exercise\animations\maya"
+    animation_files = [animations_dir + r"\01_" + ('%02d' %x) + ".ma" for x in range(1,11)]
+    character_filename = "D:\CapnSquirrel\Development\TechArt\exercise\character.mb"
 
-for anim_file in animation_files:
-    run(anim_file, character_filename)
+    for anim_file in animation_files:
+        retarget_animation(anim_file, character_filename)
