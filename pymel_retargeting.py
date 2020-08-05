@@ -37,13 +37,16 @@ def connect_joints(src_joints, dst_joints):
             if src_joint_name == "Hips":
                 pymel.core.animation.parentConstraint(src_joint, dst_joint, mo=True)
 
-def retarget_animation(animation_path, character_path):
+'''
+    Takes one source animation file path and one character rig file path as input and retargets the animation onto the character.
+'''
+def retarget_animation(anim_path, char_path):
     # create a new scene
     pymel.core.system.newFile(force=True)
     
     # create char and anim namespaces and bring in character and animation
-    animation_namespace = create_reference(animation_path)
-    character_namespace = create_reference(character_path)
+    animation_namespace = create_reference(anim_path)
+    character_namespace = create_reference(char_path)
 
     # get a list of joints of both the anim and char
     animation_joints = get_joints_from_namespace(animation_namespace)
@@ -73,11 +76,20 @@ def retarget_animation(animation_path, character_path):
     anim_ref.remove()
 
     # Save a file
-    renamed_file = r"D:\CapnSquirrel\Development\TechArt\exercise\{}_{}".format(character_namespace, animation_namespace)
+    renamed_file = r"D:\CapnSquirrel\Development\TechArt\exercise\{}_{}.mb".format(character_namespace, animation_namespace)
     pymel.core.system.renameFile(renamed_file)
     pymel.core.system.saveFile(save = True, force = True)
 
-animation_path = r"D:\CapnSquirrel\Development\TechArt\exercise\animations\maya\01_01.ma"
-character_path = r"D:\CapnSquirrel\Development\TechArt\exercise\character.mb"
+'''
+    Takes a directory path where one or more source animation files are stored and one character rig file path as input and retargets the animations onto the character.
+'''
+def retarget_animations(anim_dir, char_path):
+    anims = os.listdir(anim_dir)
+    for anim in anims:
+        anim_path = anim_dir + "\\" + anim
+        retarget_animation(anim_path, char_path)
 
-retarget_animation(animation_path, character_path)
+anim_dir = r"D:\CapnSquirrel\Development\TechArt\exercise\animations\maya"
+char_path = r"D:\CapnSquirrel\Development\TechArt\exercise\character.mb"
+
+retarget_animations(anim_dir, char_path)
